@@ -1,7 +1,6 @@
 ﻿using WApp.Domain.Interfaces;
 using WApp.Domain.Models;
-using System;
-using System.Threading.Tasks;
+
 
 namespace WApp.Application.UseCases
 {
