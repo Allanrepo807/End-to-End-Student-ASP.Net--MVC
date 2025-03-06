@@ -38,6 +38,7 @@ namespace WApp.Services
         public async Task<Student> AddStudentAsync(Student student)
         {
             _logger.LogInformation("Adding a new student");
+            student.ID = Guid.NewGuid();
             return await _repository.AddStudentAsync(student);
         }
 

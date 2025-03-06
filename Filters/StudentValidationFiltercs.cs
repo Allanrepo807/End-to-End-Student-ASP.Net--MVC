@@ -10,7 +10,6 @@ namespace WApp.Filters
     public class StudentValidationFilter : IActionFilter
     {
         private readonly StudentContext _context;
-        private static readonly Guid DefaultSwaggerGuid = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6");
 
         public StudentValidationFilter(StudentContext context)
         {
@@ -24,7 +23,7 @@ namespace WApp.Filters
             {
                 var isPostRequest = context.HttpContext.Request.Method == "POST";
 
-                if (isPostRequest && student.ID == DefaultSwaggerGuid)
+                if (isPostRequest && student.ID == Guid.Empty)
                 {
                     student.ID = Guid.NewGuid();
                 }
