@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
 using WApp.Services;
 using WApp.Domain.Models;
 
@@ -40,15 +39,8 @@ namespace WApp.Controllers
         [HttpPost]
         public async Task<ActionResult<Student>> PostStudent(Student student)
         {
-            try
-            {
-                var createdStudent = await _studentService.AddStudentAsync(student);
-                return CreatedAtAction(nameof(GetStudent), new { id = createdStudent.ID }, createdStudent);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Errors);
-            }
+            var createdStudent = await _studentService.AddStudentAsync(student);
+            return CreatedAtAction(nameof(GetStudent), new { id = createdStudent.ID }, createdStudent);
         }
 
         [HttpPut("{id}")]
@@ -58,10 +50,6 @@ namespace WApp.Controllers
             {
                 await _studentService.UpdateStudentAsync(id, student);
                 return NoContent();
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Errors);
             }
             catch (ArgumentException ex)
             {

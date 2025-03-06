@@ -1,6 +1,8 @@
-﻿using FluentValidation;
-using WApp.Domain.Models;
-using WApp.Models.Validators; // Assuming the validator is in this namespace
+﻿using WApp.Domain.Models;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WApp.Services
 {
@@ -8,13 +10,11 @@ namespace WApp.Services
     {
         private readonly IStudentRepository _repository;
         private readonly ILogger<StudentService> _logger;
-        private readonly StudentValidator _validator;
 
         public StudentService(IStudentRepository repository, ILogger<StudentService> logger)
         {
             _repository = repository;
             _logger = logger;
-            _validator = new StudentValidator();
         }
 
         public async Task<IEnumerable<Student>> GetStudentsAsync()
@@ -37,28 +37,12 @@ namespace WApp.Services
 
         public async Task<Student> AddStudentAsync(Student student)
         {
-            // Validate the student object
-            var validationResult = _validator.Validate(student);
-            if (!validationResult.IsValid)
-            {
-                _logger.LogWarning("Validation failed: {Errors}", validationResult.Errors);
-                throw new ValidationException(validationResult.Errors);
-            }
-
             _logger.LogInformation("Adding a new student");
             return await _repository.AddStudentAsync(student);
         }
 
         public async Task UpdateStudentAsync(Guid id, Student student)
         {
-            // Validate the student object
-            var validationResult = _validator.Validate(student);
-            if (!validationResult.IsValid)
-            {
-                _logger.LogWarning("Validation failed: {Errors}", validationResult.Errors);
-                throw new ValidationException(validationResult.Errors);
-            }
-
             if (id != student.ID)
             {
                 _logger.LogWarning($"ID mismatch: {id} != {student.ID}");
