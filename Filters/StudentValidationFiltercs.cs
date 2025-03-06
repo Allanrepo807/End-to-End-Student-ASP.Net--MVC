@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using WApp.Domain.Models;
 using System.Linq;
-using WApp.Data;
+using WApp.Infrastructure.Data;
 
 namespace WApp.Filters
 {
