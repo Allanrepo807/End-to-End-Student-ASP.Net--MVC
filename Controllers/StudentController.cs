@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WApp.Models;
+using FluentValidation;
 using WApp.Services;
-using System;
-using System.Threading.Tasks;
+using WApp.Domain.Models;
 
 namespace WApp.Controllers
 {
@@ -41,8 +40,15 @@ namespace WApp.Controllers
         [HttpPost]
         public async Task<ActionResult<Student>> PostStudent(Student student)
         {
-            var createdStudent = await _studentService.AddStudentAsync(student);
-            return CreatedAtAction(nameof(GetStudent), new { id = createdStudent.ID }, createdStudent);
+            try
+            {
+                var createdStudent = await _studentService.AddStudentAsync(student);
+                return CreatedAtAction(nameof(GetStudent), new { id = createdStudent.ID }, createdStudent);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
+            }
         }
 
         [HttpPut("{id}")]
@@ -52,6 +58,10 @@ namespace WApp.Controllers
             {
                 await _studentService.UpdateStudentAsync(id, student);
                 return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Errors);
             }
             catch (ArgumentException ex)
             {
@@ -76,12 +86,12 @@ namespace WApp.Controllers
                 return NotFound(ex.Message);
             }
         }
+
         [HttpDelete("clear")]
         public async Task<IActionResult> ClearAllStudents()
         {
             await _studentService.DeleteAllStudentsAsync();
             return NoContent();
         }
-
     }
 }

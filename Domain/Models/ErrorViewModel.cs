@@ -1,4 +1,4 @@
-namespace WApp.Models
+namespace WApp.Domain.Models
 {
     public class ErrorViewModel
     {

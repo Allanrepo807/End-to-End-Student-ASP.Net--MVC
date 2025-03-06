@@ -1,6 +1,8 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using WApp.Data;
 using WApp.Filters;
+using WApp.Models.Validators;
 using WApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,7 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<StudentValidationFilter>();
 });
+builder.Services.AddValidatorsFromAssemblyContaining<StudentValidator>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

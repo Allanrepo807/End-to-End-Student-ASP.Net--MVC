@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WApp.Models;
+using WApp.Domain.Models;
 
 namespace WApp.Data
 {

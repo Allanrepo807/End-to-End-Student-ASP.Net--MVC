@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using WApp.Models;
 using System;
+using WApp.Domain.Models;
 
 namespace WApp.Filters
 {

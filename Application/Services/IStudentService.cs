@@ -1,6 +1,6 @@
-﻿using WApp.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Channels;
+using WApp.Domain.Models;
 namespace WApp.Services
 {
     public interface IStudentService
