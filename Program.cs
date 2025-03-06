@@ -12,6 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<StudentContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddLogging();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,6 +20,7 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<StudentValidationFilter>();
 });
+builder.Services.AddValidatorsFromAssemblyContaining<StudentValidator>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
