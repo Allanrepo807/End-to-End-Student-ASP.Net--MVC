@@ -19,7 +19,6 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<StudentValidationFilter>();
 });
-builder.Services.AddValidatorsFromAssemblyContaining<StudentValidator>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

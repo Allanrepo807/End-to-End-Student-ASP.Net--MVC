@@ -13,7 +13,7 @@ public class StudentRepository : IStudentRepository
     {
         return await _context.Students.ToListAsync();
     }
-    public async Task<Student> GetStudentAsync(Guid id)
+    public async Task<Student?> GetStudentAsync(Guid id)
     {
         return await _context.Students.FindAsync(id);
     }
