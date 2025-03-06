@@ -26,7 +26,7 @@ namespace WApp.Filters
 
                 if (isPostRequest && student.ID == DefaultSwaggerGuid)
                 {
-                    student.ID = Guid.Empty;
+                    student.ID = Guid.NewGuid();
                 }
 
                 var validationErrors = ValidateStudent(student);
