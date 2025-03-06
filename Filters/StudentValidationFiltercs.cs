@@ -10,6 +10,7 @@ namespace WApp.Filters
     public class StudentValidationFilter : IActionFilter
     {
         private readonly StudentContext _context;
+        private static readonly Guid DefaultSwaggerGuid = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6");
 
         public StudentValidationFilter(StudentContext context)
         {
@@ -19,23 +20,18 @@ namespace WApp.Filters
         public void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ActionArguments.TryGetValue("student", out var studentObj)
-                && studentObj is Student student)
+            && studentObj is Student student)
             {
-                // Check if this is a POST request (creating a new student)
                 var isPostRequest = context.HttpContext.Request.Method == "POST";
 
-                // If the ID is empty or default AND this is a POST request, DON'T generate a GUID
-                // Let the database handle it through HasDefaultValueSql("NEWID()")
-                if (student.ID == Guid.Empty && isPostRequest)
+                if (isPostRequest && student.ID == DefaultSwaggerGuid)
                 {
-                    // Don't generate a GUID here - let the database do it
+                    student.ID = Guid.Empty;
                 }
 
-                // Validate the Name property
                 var validationErrors = ValidateStudent(student);
                 if (validationErrors.Any())
                 {
-                    // If validation fails, return a BadRequest response with validation errors
                     context.Result = new BadRequestObjectResult(validationErrors);
                 }
             }
