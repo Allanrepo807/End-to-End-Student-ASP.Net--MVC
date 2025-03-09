@@ -7,11 +7,8 @@ using WApp.Application.UseCases;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<StudentContext>(options =>
@@ -22,14 +19,18 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IUserService, UserService>(); // Add user service
+builder.Services.AddScoped<IUserRepository, UserRepository>(); // Add user repository
+
 builder.Services.AddScoped<GetStudentsUseCase>()
                 .AddScoped<GetStudentUseCase>()
                 .AddScoped<AddStudentUseCase>()
                 .AddScoped<UpdateStudentUseCase>()
                 .AddScoped<DeleteStudentUseCase>()
                 .AddScoped<DeleteAllStudentsUseCase>();
+
 // Add JWT authentication
-var jwtSettings = builder.Configuration.GetSection("Jwt");
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddAuthentication(x =>
@@ -45,8 +46,8 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"], // "localhost"
-        ValidAudience = jwtSettings["Audience"], // "localhost"
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
@@ -56,22 +57,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
-
 app.UseSwagger();
 app.UseSwaggerUI();
-
-
 app.UseHttpsRedirection();
 app.UseRouting();
-
-
-
-app.MapStaticAssets();
-app.UseAuthentication();
+app.UseAuthentication(); // This must come before UseAuthorization
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
