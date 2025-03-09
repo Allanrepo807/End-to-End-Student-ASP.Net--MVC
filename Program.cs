@@ -31,6 +31,7 @@ builder.Services.AddScoped<GetStudentsUseCase>()
 // Add JWT authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
