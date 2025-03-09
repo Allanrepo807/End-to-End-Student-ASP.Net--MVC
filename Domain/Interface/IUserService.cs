@@ -1,4 +1,5 @@
-﻿namespace WApp.Services
+﻿using WApp.Domain.Models;
+namespace WApp.Services
 {
     public interface IUserService
     {

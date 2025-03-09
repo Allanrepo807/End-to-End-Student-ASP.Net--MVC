@@ -7,6 +7,7 @@ using WApp.Application.UseCases;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WApp.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.

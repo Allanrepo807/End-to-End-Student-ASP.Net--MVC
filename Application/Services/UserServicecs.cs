@@ -1,4 +1,5 @@
 ﻿using WApp.Domain.Interfaces;
+using WApp.Domain.Models;
 using System.Security.Cryptography;
 using System.Text;
 
