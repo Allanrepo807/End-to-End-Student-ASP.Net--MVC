@@ -4,6 +4,10 @@ using WApp.Infrastructure.Data;
 using WApp.Services;
 using WApp.Domain.Interfaces;
 using WApp.Application.UseCases;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +28,28 @@ builder.Services.AddScoped<GetStudentsUseCase>()
                 .AddScoped<UpdateStudentUseCase>()
                 .AddScoped<DeleteStudentUseCase>()
                 .AddScoped<DeleteAllStudentsUseCase>();
-
+// Add JWT authentication
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"], // "localhost"
+        ValidAudience = jwtSettings["Audience"], // "localhost"
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+builder.Services.AddAuthorization();
 builder.Services.AddLogging();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -40,9 +65,11 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthorization();
+
 
 app.MapStaticAssets();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
