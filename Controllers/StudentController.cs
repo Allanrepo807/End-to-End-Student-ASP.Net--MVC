@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WApp.Models;
 using WApp.Services;
-using System;
-using System.Threading.Tasks;
+using WApp.Domain.Models;
 
 namespace WApp.Controllers
 {
@@ -76,12 +74,12 @@ namespace WApp.Controllers
                 return NotFound(ex.Message);
             }
         }
+
         [HttpDelete("clear")]
         public async Task<IActionResult> ClearAllStudents()
         {
             await _studentService.DeleteAllStudentsAsync();
             return NoContent();
         }
-
     }
 }

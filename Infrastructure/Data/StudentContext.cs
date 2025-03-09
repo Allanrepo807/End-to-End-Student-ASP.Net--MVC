@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WApp.Models;
+using WApp.Domain.Models;
 
-namespace WApp.Data
+namespace WApp.Infrastructure.Data
 {
     public class StudentContext : DbContext
     {
