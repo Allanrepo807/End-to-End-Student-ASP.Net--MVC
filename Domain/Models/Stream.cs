@@ -1,18 +1,14 @@
-﻿namespace WApp.Domain.Models
+﻿
+
+namespace WApp.Domain.Models
 {
     public class Stream
     {
-        public int StreamId { get; set; } // Primary Key (matches Sid in Student table)
-        public string StreamName { get; set; } // Stream name matches the stream name in the student table
+        public int StreamId { get; set; } // Primary key
+        public string Name { get; set; }
 
-        // Initialize the collection in constructor
-        public Stream()
-        {
-            StreamSubjects = new List<StreamSubject>();
-        }
-
-        // Navigation property for the many-to-many relationship with Subject
-        public ICollection<StreamSubject> StreamSubjects { get; set; }
-
+        // Navigation properties
+        public ICollection<Student> Students { get; set; }
+        public ICollection<Subject> Subjects { get; set; }
     }
 }
