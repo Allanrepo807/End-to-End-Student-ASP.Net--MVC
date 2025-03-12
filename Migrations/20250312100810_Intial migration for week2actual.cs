@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Week2 : Migration
+    public partial class Intialmigrationforweek2actual : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

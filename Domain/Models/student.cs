@@ -7,6 +7,8 @@
         public string Gender { get; set; }
         public int StreamId { get; set; }
 
+        public int Year { get; set; }
+
         // Navigation properties
         public Stream Stream { get; set; }
         public ICollection<Result> Results { get; set; }

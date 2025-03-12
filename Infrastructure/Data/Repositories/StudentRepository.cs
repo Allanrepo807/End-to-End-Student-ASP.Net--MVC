@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WApp.Application.DTOs;
 using WApp.Domain.Interfaces;
 using WApp.Domain.Models;
 using WApp.Infrastructure.Data;
+using WApp.Application.DTOs;
 
 public class StudentRepository : IStudentRepository
 {
@@ -22,7 +24,7 @@ public class StudentRepository : IStudentRepository
         return await _context.Students.FindAsync(id);
     }
 
-    public async Task<Student> AddStudentAsync(Student student)
+    public async Task<Student> AddStudentAsync(AddStudentDto student)
     {
         _context.Students.Add(student);
         await _context.SaveChangesAsync();

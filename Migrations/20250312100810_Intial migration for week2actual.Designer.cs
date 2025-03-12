@@ -12,8 +12,8 @@ using WApp.Infrastructure.Data;
 namespace WApp.Migrations
 {
     [DbContext(typeof(StudentContext))]
-    [Migration("20250311072720_Week2")]
-    partial class Week2
+    [Migration("20250312100810_Intial migration for week2actual")]
+    partial class Intialmigrationforweek2actual
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
