@@ -1,6 +1,6 @@
 ﻿using WApp.Domain.Interfaces;
 using WApp.Domain.Models;
-
+using WApp.Application.DTOs;
 
 namespace WApp.Application.UseCases
 {
@@ -13,7 +13,7 @@ namespace WApp.Application.UseCases
             _repository = repository;
         }
 
-        public async Task<Student> Execute(Guid id)
+        public async Task<StudentDto> Execute(Guid id)
         {
             var student = await _repository.GetStudentAsync(id);
             if (student == null)

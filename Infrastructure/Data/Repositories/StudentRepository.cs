@@ -14,17 +14,40 @@ public class StudentRepository : IStudentRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Student>> GetStudentsAsync()
+    public async Task<IEnumerable<StudentDto>> GetStudentsAsync()
     {
-        return await _context.Students.ToListAsync();
+        return await _context.Students
+            .Include(s => s.Stream)
+            .Select( s => new StudentDto
+            {
+               ID = s.ID,
+               Name = s.Name,
+               StreamId = s.StreamId,
+               StreamName =s.Stream.Name,
+               Gender = s.Gender,
+               Year = s.Year
+            })
+            .ToListAsync();
     }
 
-    public async Task<Student?> GetStudentAsync(Guid id)
+    public async Task<StudentDto?> GetStudentAsync(Guid id)
     {
-        return await _context.Students.FindAsync(id);
+        return await _context.Students
+            .Include(s => s.Stream)
+            .Where(s => s.ID == id)
+            .Select(s => new StudentDto
+            {
+                ID = s.ID,
+                Name = s.Name,
+                StreamId = s.StreamId,
+                StreamName = s.Stream.Name,
+                Gender = s.Gender,
+                Year = s.Year
+            })
+            .FirstOrDefaultAsync();
     }
 
-    public async Task<Student> AddStudentAsync(AddStudentDto student)
+    public async Task<Student> AddStudentAsync(Student student)
     {
         _context.Students.Add(student);
         await _context.SaveChangesAsync();

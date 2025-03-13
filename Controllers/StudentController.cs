@@ -2,6 +2,7 @@
 using WApp.Services;
 using WApp.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
+using WApp.Application.DTOs;
 
 namespace WApp.Controllers
 {
@@ -39,9 +40,9 @@ namespace WApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        public async Task<ActionResult<Student>> PostStudent(AddStudentDto studentdto)
         {
-            var createdStudent = await _studentService.AddStudentAsync(student);
+            var createdStudent = await _studentService.AddStudentAsync(studentdto);
             return CreatedAtAction(nameof(GetStudent), new { id = createdStudent.ID }, createdStudent);
         }
 
@@ -83,5 +84,30 @@ namespace WApp.Controllers
             await _studentService.DeleteAllStudentsAsync();
             return NoContent();
         }
+
+        [HttpPost("random")]
+        public async Task<ActionResult<IEnumerable<StudentDto>>> AddRandomStudents([FromBody] RandomStudentRequest request)
+        {
+            if (request.Count <= 0 || request.Count > 50)
+            {
+                return BadRequest("Number of random students must be between 1 and 20");
+            }
+
+            var addedStudents = await _studentService.AddRandomStudentsAsync(
+                request.Count,
+                request.StreamId,
+                request.Year
+            );
+
+            return Ok(addedStudents);
+        }
+        public class RandomStudentRequest
+        {
+            public int Count { get; set; } = 5; // Default to 5 if not specified
+            public int StreamId { get; set; }
+            public int Year { get; set; }
+        }
     }
+
+
 }

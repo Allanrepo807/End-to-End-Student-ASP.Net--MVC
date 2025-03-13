@@ -1,5 +1,6 @@
 ﻿using WApp.Application.UseCases; // Add this directive
 using WApp.Domain.Models;
+using WApp.Application.DTOs;
 
 namespace WApp.Services
 {
@@ -11,6 +12,7 @@ namespace WApp.Services
         private readonly UpdateStudentUseCase _updateStudentUseCase;
         private readonly DeleteStudentUseCase _deleteStudentUseCase;
         private readonly DeleteAllStudentsUseCase _deleteAllStudentsUseCase;
+        private readonly AddRandomStudentsUseCase _addRandomStudentsUseCase;
         private readonly ILogger<StudentService> _logger;
 
         public StudentService(
@@ -20,6 +22,7 @@ namespace WApp.Services
             UpdateStudentUseCase updateStudentUseCase,
             DeleteStudentUseCase deleteStudentUseCase,
             DeleteAllStudentsUseCase deleteAllStudentsUseCase,
+             AddRandomStudentsUseCase addRandomStudentsUseCase, // Inject the new use case
             ILogger<StudentService> logger)
         {
             _getStudentsUseCase = getStudentsUseCase;
@@ -28,25 +31,26 @@ namespace WApp.Services
             _updateStudentUseCase = updateStudentUseCase;
             _deleteStudentUseCase = deleteStudentUseCase;
             _deleteAllStudentsUseCase = deleteAllStudentsUseCase;
+            _addRandomStudentsUseCase = addRandomStudentsUseCase;
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsAsync()
+        public async Task<IEnumerable<StudentDto>> GetStudentsAsync()
         {
             _logger.LogInformation("Fetching all students");
             return await _getStudentsUseCase.Execute();
         }
 
-        public async Task<Student> GetStudentAsync(Guid id)
+        public async Task<StudentDto> GetStudentAsync(Guid id)
         {
             _logger.LogInformation($"Fetching student with ID: {id}");
             return await _getStudentUseCase.Execute(id);
         }
 
-        public async Task<Student> AddStudentAsync(Student student)
+        public async Task<Student> AddStudentAsync(AddStudentDto studentdto)
         {
             _logger.LogInformation("Adding a new student");
-            return await _addStudentUseCase.Execute(student);
+            return await _addStudentUseCase.Execute(studentdto);
         }
 
         public async Task UpdateStudentAsync(Guid id, Student student)
@@ -66,5 +70,11 @@ namespace WApp.Services
             _logger.LogInformation("Deleting all students.");
             await _deleteAllStudentsUseCase.Execute();
         }
+        public async Task<IEnumerable<StudentDto>> AddRandomStudentsAsync(int count, int streamId, int year)
+        {
+            _logger.LogInformation($"Generating {count} random students for stream {streamId} and year {year}");
+            return await _addRandomStudentsUseCase.Execute(count, streamId, year);
+        }
+
     }
 }

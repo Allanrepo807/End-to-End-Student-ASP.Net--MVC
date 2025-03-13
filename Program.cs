@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WApp.Filters;
 using WApp.Infrastructure.Data;
-using WApp.Services;
+using WApp.Services; // Ensure this using directive is present
 using WApp.Domain.Interfaces;
 using WApp.Application.UseCases;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +11,7 @@ using WApp.Infrastructure.Repositories;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<StudentContext>(options =>
@@ -19,6 +20,8 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<StudentValidationFilter>();
 });
+
+// Register services
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IUserService, UserService>(); // Add user service
@@ -28,7 +31,21 @@ builder.Services.AddScoped<GetStudentsUseCase>()
                 .AddScoped<AddStudentUseCase>()
                 .AddScoped<UpdateStudentUseCase>()
                 .AddScoped<DeleteStudentUseCase>()
-                .AddScoped<DeleteAllStudentsUseCase>();
+                .AddScoped<DeleteAllStudentsUseCase>()
+                .AddScoped<AddRandomStudentsUseCase>()
+                .AddScoped<GetSubjectResultsUseCase>()
+                .AddScoped<GetResultsUseCase>()
+                .AddScoped<GetYearlyGpasUseCase>();
+
+builder.Services.AddScoped<ISubjectResultService, SubjectResultService>();
+builder.Services.AddScoped<IResultService, ResultService>(); // Ensure IResultService is resolved
+builder.Services.AddScoped<IYearlyGpaService, YearlyGpaService>();
+
+builder.Services.AddScoped<ISubjectResultRepository, SubjectResultRepository>();
+builder.Services.AddScoped<IResultRepository, ResultRepository>();
+builder.Services.AddScoped<IYearlyGpaRepository, YearlyGpaRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+
 // Add JWT authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
@@ -91,6 +108,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
