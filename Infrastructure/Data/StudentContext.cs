@@ -67,15 +67,22 @@ namespace WApp.Infrastructure.Data
                 .HasIndex(u => u.Username)
                 .IsUnique();
 
-            // Configure Result entity
+            // Updated Result entity configuration
             modelBuilder.Entity<Result>()
-                .HasKey(r => new { r.StudentId, r.Year });
+                .HasKey(r => new { r.StudentId, r.Year, r.SubjectSubId });
 
             modelBuilder.Entity<Result>()
                 .HasOne(r => r.Student)
                 .WithMany(s => s.Results)
                 .HasForeignKey(r => r.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Add the new relationship between Result and Subject
+            modelBuilder.Entity<Result>()
+                .HasOne(r => r.Subject)
+                .WithMany(s => s.Results)
+                .HasForeignKey(r => r.SubjectSubId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configure Stream entity
             modelBuilder.Entity<Stream>()

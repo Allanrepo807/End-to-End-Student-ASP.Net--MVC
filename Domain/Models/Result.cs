@@ -7,7 +7,8 @@
         public int Year { get; set; }
 
         public double TotalMarksObtained { get; set; }
-        public bool PassFail { get; set; }
+
+        public int SubjectSubId { get; set; }
 
         // Navigation property
         public Student Student { get; set; }
