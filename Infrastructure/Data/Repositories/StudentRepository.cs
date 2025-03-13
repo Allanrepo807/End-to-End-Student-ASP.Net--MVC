@@ -3,7 +3,6 @@ using WApp.Application.DTOs;
 using WApp.Domain.Interfaces;
 using WApp.Domain.Models;
 using WApp.Infrastructure.Data;
-using WApp.Application.DTOs;
 
 public class StudentRepository : IStudentRepository
 {

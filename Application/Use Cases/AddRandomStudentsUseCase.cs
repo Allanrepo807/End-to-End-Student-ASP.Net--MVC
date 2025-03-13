@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Bogus;
+﻿using Bogus;
 using WApp.Domain.Interfaces;
 using WApp.Domain.Models;
 using WApp.Application.DTOs;
@@ -110,13 +107,14 @@ namespace WApp.Application.UseCases
                 // Add to our result list
                 addedStudents.Add(new StudentDto
                 {
-                    ID = student.ID,
-                    Name = student.Name,
-                    Gender = student.Gender,
-                    StreamId = student.StreamId,
-                    StreamName = student.Stream?.Name,
-                    Year = student.Year
+                    ID = addedStudent.ID,  // Ensures the correct ID is used
+                    Name = addedStudent.Name,
+                    Gender = addedStudent.Gender,
+                    StreamId = addedStudent.StreamId,
+                    StreamName = addedStudent.Stream?.Name,  // Ensures StreamName is correctly populated
+                    Year = addedStudent.Year
                 });
+
             }
 
             return addedStudents;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using WApp.Application.DTO;
+﻿using WApp.Application.DTO;
 using WApp.Domain.Models;
 
 namespace WApp.Domain.Interfaces
