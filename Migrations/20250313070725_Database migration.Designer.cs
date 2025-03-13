@@ -12,8 +12,8 @@ using WApp.Infrastructure.Data;
 namespace WApp.Migrations
 {
     [DbContext(typeof(StudentContext))]
-    [Migration("20250312100810_Intial migration for week2actual")]
-    partial class Intialmigrationforweek2actual
+    [Migration("20250313070725_Database migration")]
+    partial class Databasemigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,6 +93,9 @@ namespace WApp.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("StreamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("ID");

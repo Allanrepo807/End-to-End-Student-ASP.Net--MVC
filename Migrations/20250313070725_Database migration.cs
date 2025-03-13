@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Intialmigrationforweek2actual : Migration
+    public partial class Databasemigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,7 +46,8 @@ namespace WApp.Migrations
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    StreamId = table.Column<int>(type: "int", nullable: false)
+                    StreamId = table.Column<int>(type: "int", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

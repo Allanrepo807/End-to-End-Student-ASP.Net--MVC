@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.EntityFrameworkCore;
 using WApp.Application.DTO;
-using WApp.Application.DTOs;
 using WApp.Domain.Interfaces;
 using WApp.Domain.Models;
 using WApp.Infrastructure.Data;
