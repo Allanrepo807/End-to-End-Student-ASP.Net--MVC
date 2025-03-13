@@ -1,5 +1,4 @@
-﻿using WApp.Application.DTO;
-using WApp.Application.UseCases;
+﻿using WApp.Application.UseCases;
 
 
 namespace WApp.Services
@@ -17,16 +16,16 @@ namespace WApp.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<ResultDto>> GetResultsAsync()
+        public async Task<ResultWithAverageDto> GetResultByStudentAndYearAsync(string stream, int year, string gender, string subname)
         {
-            _logger.LogInformation("Fetching all results");
-            return await _getResultsUseCase.Execute();
-        }
+            _logger.LogInformation($"Fetching result for students with specified parameters");
+            var (results, avgmarks) = await _getResultsUseCase.Execute(stream, year, gender, subname);
 
-        public async Task<ResultDto> GetResultByStudentAndYearAsync(Guid studentId, int year)
-        {
-            _logger.LogInformation($"Fetching result for student: {studentId}, year: {year}");
-            return await _getResultsUseCase.Execute(studentId, year);
+            return new ResultWithAverageDto
+            {
+                Results = results,
+                AverageMarks = avgmarks
+            };
         }
     }
 }

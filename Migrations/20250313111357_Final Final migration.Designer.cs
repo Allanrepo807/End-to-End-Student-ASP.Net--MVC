@@ -12,8 +12,8 @@ using WApp.Infrastructure.Data;
 namespace WApp.Migrations
 {
     [DbContext(typeof(StudentContext))]
-    [Migration("20250312100810_Intial migration for week2actual")]
-    partial class Intialmigrationforweek2actual
+    [Migration("20250313111357_Final Final migration")]
+    partial class FinalFinalmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,10 +36,19 @@ namespace WApp.Migrations
                     b.Property<bool>("PassFail")
                         .HasColumnType("bit");
 
+                    b.Property<int>("SubjectStreamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubjectSubId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("TotalMarksObtained")
                         .HasColumnType("float");
 
                     b.HasKey("StudentId", "Year");
+
+                    b.HasIndex("SubjectSubId", "SubjectStreamId");
 
                     b.ToTable("Results");
                 });
@@ -93,6 +102,9 @@ namespace WApp.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("StreamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -339,7 +351,15 @@ namespace WApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WApp.Domain.Models.Subject", "Subject")
+                        .WithMany("Results")
+                        .HasForeignKey("SubjectSubId", "SubjectStreamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Student");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("WApp.Domain.Models.Student", b =>
@@ -412,6 +432,8 @@ namespace WApp.Migrations
 
             modelBuilder.Entity("WApp.Domain.Models.Subject", b =>
                 {
+                    b.Navigation("Results");
+
                     b.Navigation("SubjectResults");
                 });
 #pragma warning restore 612, 618

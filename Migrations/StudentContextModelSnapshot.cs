@@ -33,10 +33,19 @@ namespace WApp.Migrations
                     b.Property<bool>("PassFail")
                         .HasColumnType("bit");
 
+                    b.Property<int>("SubjectStreamId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubjectSubId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("TotalMarksObtained")
                         .HasColumnType("float");
 
                     b.HasKey("StudentId", "Year");
+
+                    b.HasIndex("SubjectSubId", "SubjectStreamId");
 
                     b.ToTable("Results");
                 });
@@ -339,7 +348,15 @@ namespace WApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WApp.Domain.Models.Subject", "Subject")
+                        .WithMany("Results")
+                        .HasForeignKey("SubjectSubId", "SubjectStreamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Student");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("WApp.Domain.Models.Student", b =>
@@ -412,6 +429,8 @@ namespace WApp.Migrations
 
             modelBuilder.Entity("WApp.Domain.Models.Subject", b =>
                 {
+                    b.Navigation("Results");
+
                     b.Navigation("SubjectResults");
                 });
 #pragma warning restore 612, 618

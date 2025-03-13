@@ -21,36 +21,54 @@ namespace WApp.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return result;
         }
-
-        public async Task<IEnumerable<ResultDto>> GetAllResultsAsync()
+        public async Task<(IEnumerable<ResultDto> Results ,double AverageMarks)> GetResultByStudentAndYearAsync(string stream, int year, string gender, string subname)
         {
-            return await _context.Results
+
+            var query = _context.Results
+                .Include(r => r.Subject)
+                .Include(r=> r.Student)
+                    .ThenInclude(s => s.Stream)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(stream))
+            {
+                query = query.Where(r => r.Student.Stream.Name == stream);
+            }
+
+            if(!string.IsNullOrEmpty(gender))
+            {
+                query = query.Where(r => r.Student.Gender == gender);
+            }
+            if (!string.IsNullOrEmpty(subname))
+            {
+                query = query.Where(r => r.Subject.SubName == subname);
+            }
+            if( year > 0)
+            {
+                query = query.Where(r => r.Year == year);
+            }
+
+            var results = await query
                 .Include(r => r.Student)
                 .Select(r => new ResultDto
                 {
                     StudentId = r.StudentId,
                     Year = r.Year,
                     TotalMarksObtained = r.TotalMarksObtained,
-                    PassFail = r.PassFail,
-                    StudentName = r.Student.Name
+                    StudentName = r.Student.Name,
+                    subname = r.Subject.SubName,
+                    StreamName = r.Student.Stream.Name
                 })
                 .ToListAsync();
+
+            var avgmarks = results.Any() ? results.Average(r => r.TotalMarksObtained) : 0;
+
+            return (Results: results, AverageMarks: avgmarks);
+
+
+
         }
 
-        public async Task<ResultDto> GetResultByStudentAndYearAsync(Guid studentId, int year)
-        {
-            return await _context.Results
-                .Include(r => r.Student)
-                .Where(r => r.StudentId == studentId && r.Year == year)
-                .Select(r => new ResultDto
-                {
-                    StudentId = r.StudentId,
-                    Year = r.Year,
-                    TotalMarksObtained = r.TotalMarksObtained,
-                    PassFail = r.PassFail,
-                    StudentName = r.Student.Name
-                })
-                .FirstOrDefaultAsync();
-        }
+            
     }
 }

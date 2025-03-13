@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WApp.Application.DTO;
 using WApp.Services;
 
 namespace WApp.Controllers
@@ -18,17 +17,10 @@ namespace WApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ResultDto>>> GetResults()
+        public async Task<ActionResult<ResultWithAverageDto>> GetResultByStudentAndYear(string stream, int year, string gender, string subname)
         {
-            var results = await _resultService.GetResultsAsync();
-            return Ok(results);
-        }
-
-        [HttpGet("student/{studentId}/year/{year}")]
-        public async Task<ActionResult<ResultDto>> GetResultByStudentAndYear(Guid studentId, int year)
-        {
-            var result = await _resultService.GetResultByStudentAndYearAsync(studentId, year);
-            if (result == null)
+            var result = await _resultService.GetResultByStudentAndYearAsync(stream, year, gender, subname);
+            if (result == null || !result.Results.Any())
             {
                 return NotFound();
             }

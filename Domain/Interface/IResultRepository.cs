@@ -8,8 +8,6 @@ namespace WApp.Domain.Interfaces
     public interface IResultRepository
     {
         Task<Result> AddResultAsync(Result result);
-        Task<IEnumerable<ResultDto>> GetAllResultsAsync();
-        Task<ResultDto> GetResultByStudentAndYearAsync(Guid studentId, int year);
-        // Add other methods as needed
+        Task<(IEnumerable<ResultDto> Results, double AverageMarks)> GetResultByStudentAndYearAsync(string stream, int year, string gender, string subname);
     }
 }

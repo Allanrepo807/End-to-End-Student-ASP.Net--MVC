@@ -10,5 +10,9 @@
         // Navigation properties
         public Stream Stream { get; set; }
         public ICollection<SubjectResult> SubjectResults { get; set; }
+
+        public ICollection<Result> Results { get; set; }
+
+
     }
 }

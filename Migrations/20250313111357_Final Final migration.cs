@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Intialmigrationforweek2actual : Migration
+    public partial class FinalFinalmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,7 +46,8 @@ namespace WApp.Migrations
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    StreamId = table.Column<int>(type: "int", nullable: false)
+                    StreamId = table.Column<int>(type: "int", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,26 +81,6 @@ namespace WApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Results",
-                columns: table => new
-                {
-                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    TotalMarksObtained = table.Column<double>(type: "float", nullable: false),
-                    PassFail = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Results", x => new { x.StudentId, x.Year });
-                    table.ForeignKey(
-                        name: "FK_Results_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "YearlyGpas",
                 columns: table => new
                 {
@@ -115,6 +96,34 @@ namespace WApp.Migrations
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Results",
+                columns: table => new
+                {
+                    StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    TotalMarksObtained = table.Column<double>(type: "float", nullable: false),
+                    PassFail = table.Column<bool>(type: "bit", nullable: false),
+                    SubjectSubId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SubjectStreamId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Results", x => new { x.StudentId, x.Year });
+                    table.ForeignKey(
+                        name: "FK_Results_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Results_Subjects_SubjectSubId_SubjectStreamId",
+                        columns: x => new { x.SubjectSubId, x.SubjectStreamId },
+                        principalTable: "Subjects",
+                        principalColumns: new[] { "SubId", "StreamId" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -179,6 +188,11 @@ namespace WApp.Migrations
                     { 2, "PY", "Python", 2 },
                     { 2, "TOC", "Theory of Computation", 2 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Results_SubjectSubId_SubjectStreamId",
+                table: "Results",
+                columns: new[] { "SubjectSubId", "SubjectStreamId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Streams_Name",
