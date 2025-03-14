@@ -16,10 +16,10 @@ namespace WApp.Services
             _logger = logger;
         }
 
-        public async Task<ResultWithAverageDto> GetResultByStudentAndYearAsync(string stream, int year, string gender, string subname)
+        public async Task<ResultWithAverageDto> GetResultByStudentAndYearAsync(string stream, int? year, string gender)
         {
             _logger.LogInformation($"Fetching result for students with specified parameters");
-            var (results, avgmarks) = await _getResultsUseCase.Execute(stream, year, gender, subname);
+            var (results, avgmarks) = await _getResultsUseCase.Execute(stream, year, gender);
 
             return new ResultWithAverageDto
             {

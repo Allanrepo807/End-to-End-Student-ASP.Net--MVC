@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WApp.Application.DTO;
 using WApp.Domain.Interfaces;
-using WApp.Domain.Models;
 using WApp.Infrastructure.Data;
 
 namespace WApp.Infrastructure.Repositories
@@ -21,12 +20,10 @@ namespace WApp.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return result;
         }
-        public async Task<(IEnumerable<ResultDto> Results ,double AverageMarks)> GetResultByStudentAndYearAsync(string stream, int year, string gender, string subname)
+        public async Task<(IEnumerable<ResultDto> Results, double AverageMarks)> GetResultByStudentAndYearAsync(string stream, int? year, string gender)
         {
-
             var query = _context.Results
-                .Include(r => r.Subject)
-                .Include(r=> r.Student)
+                .Include(r => r.Student)
                     .ThenInclude(s => s.Stream)
                 .AsQueryable();
 
@@ -35,15 +32,12 @@ namespace WApp.Infrastructure.Repositories
                 query = query.Where(r => r.Student.Stream.Name == stream);
             }
 
-            if(!string.IsNullOrEmpty(gender))
+            if (!string.IsNullOrEmpty(gender))
             {
                 query = query.Where(r => r.Student.Gender == gender);
             }
-            if (!string.IsNullOrEmpty(subname))
-            {
-                query = query.Where(r => r.Subject.SubName == subname);
-            }
-            if( year > 0)
+
+            if (year.HasValue && year > 0) // Only apply the year filter if a value is provided
             {
                 query = query.Where(r => r.Year == year);
             }
@@ -56,19 +50,19 @@ namespace WApp.Infrastructure.Repositories
                     Year = r.Year,
                     TotalMarksObtained = r.TotalMarksObtained,
                     StudentName = r.Student.Name,
-                    subname = r.Subject.SubName,
                     StreamName = r.Student.Stream.Name
                 })
                 .ToListAsync();
 
-            var avgmarks = results.Any() ? results.Average(r => r.TotalMarksObtained) : 0;
+            var avgmarks = results.Any() ? Math.Round(results.Average(r => r.TotalMarksObtained), 2) : 0;
 
             return (Results: results, AverageMarks: avgmarks);
-
-
-
         }
 
-            
+
+
     }
+
+            
+    
 }

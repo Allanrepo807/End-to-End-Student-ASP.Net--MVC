@@ -84,8 +84,8 @@ namespace WApp.Application.UseCases
                 {
                     StudentId = student.ID,
                     Year = year,
-                    TotalMarksObtained = totalMarks,
-                    PassFail = totalMarks >= (subjects.Count() * 40) // Pass if average is at least 40
+                    TotalMarksObtained = totalMarks
+                   
                 };
 
                 await _resultRepository.AddResultAsync(result);

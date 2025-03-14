@@ -7,7 +7,7 @@ namespace WApp.Domain.Interfaces
     {
         Task AddSubjectResultsAsync(IEnumerable<SubjectResult> subjectResults);
         Task<IEnumerable<SubjectResultDto>> GetAllSubjectResultsAsync();
-        Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(Guid studentId);
+        Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(string subaname);
         // Add other methods as needed
     }
 }

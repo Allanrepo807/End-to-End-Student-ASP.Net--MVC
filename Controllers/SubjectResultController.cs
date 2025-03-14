@@ -26,10 +26,10 @@ namespace WApp.Controllers
             return Ok(subjectResults);
         }
 
-        [HttpGet("student/{studentId}")]
-        public async Task<ActionResult<IEnumerable<SubjectResultDto>>> GetSubjectResultsByStudent(Guid studentId)
+        [HttpGet("SubName/{subname}")]
+        public async Task<ActionResult<IEnumerable<SubjectResultDto>>> GetSubjectResultsByStudent(string subname)
         {
-            var subjectResults = await _subjectResultService.GetSubjectResultsByStudentIdAsync(studentId);
+            var subjectResults = await _subjectResultService.GetSubjectResultsByStudentIdAsync(subname);
             return Ok(subjectResults);
         }
     }

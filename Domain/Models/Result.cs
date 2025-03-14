@@ -1,17 +1,19 @@
-﻿namespace WApp.Domain.Models
+﻿using WApp.Domain.Models;
+
+public class Result
 {
-    public class Result
-    {
-        // Composite primary key (StudentId + Year)
-        public Guid StudentId { get; set; }
-        public int Year { get; set; }
+    // Composite primary key
+    public Guid StudentId { get; set; }
+    public int Year { get; set; }
 
-        public double TotalMarksObtained { get; set; }
+    // Total marks across all subjects
+    public double TotalMarksObtained { get; set; }
 
-        public int SubjectSubId { get; set; }
+    // Navigation property
+    public Student Student { get; set; }
 
-        // Navigation property
-        public Student Student { get; set; }
-        public Subject Subject { get; set; }
-    }
+    // Remove these properties
+    // public string SubjectSubId { get; set; }
+    // public int SubjectStreamId { get; set; }
+    // public Subject Subject { get; set; }
 }

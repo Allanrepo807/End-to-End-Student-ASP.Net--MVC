@@ -1,7 +1,5 @@
 ﻿using WApp.Application.DTO;
 using WApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace WApp.Application.UseCases
 {
@@ -14,9 +12,9 @@ namespace WApp.Application.UseCases
             _repository = repository;
         }
 
-        public async Task<(IEnumerable<ResultDto> Results, double AverageMarks)> Execute(string stream, int year, string gender, string subname)
+        public async Task<(IEnumerable<ResultDto> Results, double AverageMarks)> Execute(string stream, int? year, string gender)
         {
-            return await _repository.GetResultByStudentAndYearAsync(stream, year, gender, subname);
+            return await _repository.GetResultByStudentAndYearAsync(stream, year, gender);
         }
     }
 }

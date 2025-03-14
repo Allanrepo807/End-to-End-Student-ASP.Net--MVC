@@ -26,10 +26,10 @@ namespace WApp.Services
             return await _getSubjectResultsUseCase.Execute();
         }
 
-        public async Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(Guid studentId)
+        public async Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(string subname)
         {
-            _logger.LogInformation($"Fetching subject results for student: {studentId}");
-            return await _getSubjectResultsUseCase.Execute(studentId);
+            _logger.LogInformation($"Fetching subject results for subname: {subname}");
+            return await _getSubjectResultsUseCase.Execute(subname);
         }
     }
 }

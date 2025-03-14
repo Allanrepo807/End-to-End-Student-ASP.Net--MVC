@@ -43,12 +43,12 @@ namespace WApp.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(Guid studentId)
+        public async Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(string subname)
         {
             return await _context.SubjectResults
                 .Include(sr => sr.Subject)
                 .Include(sr => sr.Student)
-                .Where(sr => sr.StudentId == studentId)
+                .Where(sr => sr.Subject.SubName == subname)
                 .Select(sr => new SubjectResultDto
                 {
                     SubId = sr.SubId,

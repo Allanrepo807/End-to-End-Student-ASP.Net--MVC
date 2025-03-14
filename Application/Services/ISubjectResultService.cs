@@ -11,6 +11,6 @@ namespace WApp.Services
     public interface ISubjectResultService
     {
         Task<IEnumerable<SubjectResultDto>> GetSubjectResultsAsync();
-        Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(Guid studentId);
+        Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(string subname);
     }
 }

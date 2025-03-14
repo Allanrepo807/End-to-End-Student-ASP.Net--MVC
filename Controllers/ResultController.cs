@@ -17,9 +17,12 @@ namespace WApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResultWithAverageDto>> GetResultByStudentAndYear(string stream, int year, string gender, string subname)
+        public async Task<ActionResult<ResultWithAverageDto>> GetResultByStudentAndYear(
+        [FromQuery] string stream = null,
+        [FromQuery] int? year = null,
+        [FromQuery] string gender = null)
         {
-            var result = await _resultService.GetResultByStudentAndYearAsync(stream, year, gender, subname);
+            var result = await _resultService.GetResultByStudentAndYearAsync(stream, year, gender);
             if (result == null || !result.Results.Any())
             {
                 return NotFound();
