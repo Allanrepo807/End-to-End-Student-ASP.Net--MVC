@@ -1,5 +1,6 @@
 ﻿using WApp.Domain.Models;
 using WApp.Application.DTOs;
+using WApp.Application.DTO;
 namespace WApp.Services
 {
     public interface IStudentService
@@ -11,6 +12,7 @@ namespace WApp.Services
         Task DeleteStudentAsync(Guid id);
         Task DeleteAllStudentsAsync();
         Task<IEnumerable<StudentDto>> AddRandomStudentsAsync(int count, int streamId, int year);
+        Task<IEnumerable<SubjectDto>> GetSubjects(int stream, int year);
     }
 
 }

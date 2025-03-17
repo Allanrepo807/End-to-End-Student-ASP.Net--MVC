@@ -1,6 +1,8 @@
 ﻿using WApp.Application.UseCases; // Add this directive
 using WApp.Domain.Models;
 using WApp.Application.DTOs;
+using WApp.Application.DTO;
+using WApp.Application.Use_Cases;
 
 namespace WApp.Services
 {
@@ -13,6 +15,7 @@ namespace WApp.Services
         private readonly DeleteStudentUseCase _deleteStudentUseCase;
         private readonly DeleteAllStudentsUseCase _deleteAllStudentsUseCase;
         private readonly AddRandomStudentsUseCase _addRandomStudentsUseCase;
+        private readonly GetSubjectUseCase _getSubjectUseCase;
         private readonly ILogger<StudentService> _logger;
 
         public StudentService(
@@ -22,7 +25,8 @@ namespace WApp.Services
             UpdateStudentUseCase updateStudentUseCase,
             DeleteStudentUseCase deleteStudentUseCase,
             DeleteAllStudentsUseCase deleteAllStudentsUseCase,
-             AddRandomStudentsUseCase addRandomStudentsUseCase, // Inject the new use case
+            AddRandomStudentsUseCase addRandomStudentsUseCase,// Inject the new use case
+            GetSubjectUseCase getSubjectUseCase,
             ILogger<StudentService> logger)
         {
             _getStudentsUseCase = getStudentsUseCase;
@@ -32,6 +36,7 @@ namespace WApp.Services
             _deleteStudentUseCase = deleteStudentUseCase;
             _deleteAllStudentsUseCase = deleteAllStudentsUseCase;
             _addRandomStudentsUseCase = addRandomStudentsUseCase;
+            _getSubjectUseCase = getSubjectUseCase;
             _logger = logger;
         }
 
@@ -76,5 +81,10 @@ namespace WApp.Services
             return await _addRandomStudentsUseCase.Execute(count, streamId, year);
         }
 
+        public async Task<IEnumerable<SubjectDto>> GetSubjects(int stream, int year)
+        {
+            _logger.LogInformation($" Returning subject with stream:{stream} and year:{year}");
+            return await _getSubjectUseCase.Execute(stream, year);
+        }
     }
 }

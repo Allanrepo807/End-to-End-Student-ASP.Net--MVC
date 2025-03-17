@@ -1,5 +1,4 @@
 ﻿using WApp.Domain.Interfaces;
-using WApp.Domain.Models;
 using WApp.Application.DTOs;
 
 namespace WApp.Application.UseCases

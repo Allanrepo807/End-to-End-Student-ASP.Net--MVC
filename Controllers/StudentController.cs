@@ -3,6 +3,7 @@ using WApp.Services;
 using WApp.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using WApp.Application.DTOs;
+using WApp.Application.DTO;
 
 namespace WApp.Controllers
 {
@@ -101,13 +102,22 @@ namespace WApp.Controllers
 
             return Ok(addedStudents);
         }
+
+
         public class RandomStudentRequest
         {
             public int Count { get; set; } = 5; // Default to 5 if not specified
             public int StreamId { get; set; }
             public int Year { get; set; }
         }
+
+        [HttpGet("subjects, Takes streamId and Year as input")]
+
+        public async Task<IEnumerable<SubjectDto>> GetSubjects([FromQuery] int stream, [FromQuery] int year)
+        {
+            var subjects = await _studentService.GetSubjects(stream, year);
+            return subjects;
+        }
+
     }
-
-
 }

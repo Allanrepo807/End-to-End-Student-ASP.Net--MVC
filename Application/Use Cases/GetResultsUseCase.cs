@@ -12,9 +12,9 @@ namespace WApp.Application.UseCases
             _repository = repository;
         }
 
-        public async Task<(IEnumerable<ResultDto> Results, double AverageMarks)> Execute(string stream, int? year, string gender)
+        public async Task<(IEnumerable<ResultDto> Results, double AverageMarks)> Execute(string stream, int? year, string gender, List<string> subnames)
         {
-            return await _repository.GetResultByStudentAndYearAsync(stream, year, gender);
+            return await _repository.GetResultByStudentAndYearAsync(stream, year, gender,subnames);
         }
     }
 }

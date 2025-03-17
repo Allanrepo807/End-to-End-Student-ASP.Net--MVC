@@ -8,5 +8,7 @@
         public double MarksObtained { get; set; }
         public string SubjectName { get; set; } // Added for display purposes
         public string StudentName { get; set; }
+        public string StreamName { get; set; } // Added property
+        public int Year { get; set; } // Added property
     }
 }

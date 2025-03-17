@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WApp.Infrastructure.Repositories;
 using Microsoft.OpenApi.Models;
+using WApp.Application.Use_Cases;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,8 @@ builder.Services.AddScoped<GetStudentsUseCase>()
                 .AddScoped<AddRandomStudentsUseCase>()
                 .AddScoped<GetSubjectResultsUseCase>()
                 .AddScoped<GetResultsUseCase>()
-                .AddScoped<GetYearlyGpasUseCase>();
+                .AddScoped<GetYearlyGpasUseCase>()
+                .AddScoped<GetSubjectUseCase>();
 
 builder.Services.AddScoped<ISubjectResultService, SubjectResultService>();
 builder.Services.AddScoped<IResultService, ResultService>(); // Ensure IResultService is resolved
