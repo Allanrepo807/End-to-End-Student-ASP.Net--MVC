@@ -27,7 +27,7 @@ namespace WApp.Controllers
         }
 
         [HttpGet("SubName/{subname}")]
-        public async Task<ActionResult<IEnumerable<SubjectResultDto>>> GetSubjectResultsByStudent(string subname)
+        public async Task<ActionResult<IEnumerable<SubjectResultWithAvgDto>>> GetSubjectResultsByStudent(string subname)
         {
             var subjectResults = await _subjectResultService.GetSubjectResultsByStudentIdAsync(subname);
             return Ok(subjectResults);

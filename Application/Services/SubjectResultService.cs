@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using WApp.Application.DTO;
-using WApp.Application.DTOs;
+﻿using WApp.Application.DTO;
 using WApp.Application.UseCases;
 
 namespace WApp.Services
@@ -26,10 +21,15 @@ namespace WApp.Services
             return await _getSubjectResultsUseCase.Execute();
         }
 
-        public async Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(string subname)
+        public async Task<SubjectResultWithAvgDto> GetSubjectResultsByStudentIdAsync(string subname)
         {
             _logger.LogInformation($"Fetching subject results for subname: {subname}");
-            return await _getSubjectResultsUseCase.Execute(subname);
+            var (subjectResults, avg) = await _getSubjectResultsUseCase.Execute(subname);
+            return new SubjectResultWithAvgDto
+            {
+                SubjectResults = subjectResults,
+                AverageMarks = avg
+            };
         }
     }
 }

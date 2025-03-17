@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WApp.Application.DTO;
-using WApp.Application.DTOs;
 using WApp.Domain.Interfaces;
 using WApp.Domain.Models;
 using WApp.Infrastructure.Data;
@@ -43,9 +38,9 @@ namespace WApp.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<SubjectResultDto>> GetSubjectResultsByStudentIdAsync(string subname)
+        public async Task<(IEnumerable<SubjectResultDto >Subject_Results, decimal avg)> GetSubjectResultsByStudentIdAsync(string subname)
         {
-            return await _context.SubjectResults
+                 var subject_result = await _context.SubjectResults
                 .Include(sr => sr.Subject)
                 .Include(sr => sr.Student)
                 .Where(sr => sr.Subject.SubName == subname)
@@ -59,6 +54,10 @@ namespace WApp.Infrastructure.Repositories
                     StudentName = sr.Student.Name
                 })
                 .ToListAsync();
+
+            var avg = subject_result.Any() ?(decimal) Math.Round(subject_result.Average(sr => sr.MarksObtained), 2) : 0;
+
+            return (subject_result, avg);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace WApp.Application.UseCases
             return await _repository.GetAllSubjectResultsAsync();
         }
 
-        public async Task<IEnumerable<SubjectResultDto>> Execute(string subname)
+        public async Task<(IEnumerable<SubjectResultDto>Subject_Result, decimal avg)> Execute(string subname)
         {
             return await _repository.GetSubjectResultsByStudentIdAsync(subname);
         }
